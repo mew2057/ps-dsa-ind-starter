@@ -1,7 +1,7 @@
 ﻿namespace ConsoleApp_Sample
 {
     /// <summary>
-    /// All classes need a comment header describing what they represent!
+    /// All classes & methods need a comment header describing what they represent!
     /// 
     /// The Program class hold just the definition of the Main() method.
     /// </summary>

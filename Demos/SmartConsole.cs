@@ -1,146 +1,149 @@
-﻿// CHANGE the namespace to match the one in your project!
-namespace CHANGE_THIS
+﻿/// DO NOT CHANGE ANYTHING IN THIS FILE
+/// except to make the namespace match your project
+namespace ChangeToMatchNamespace
 {
     /// <summary>
-    /// Author: Erika S. Mesh. Demo/helper code written for RIT GDAPS 1 and 2.
+    /// Class to hold static helper methods related to prompting for 
+    /// and parsing, validating, and returning user responses.
     /// 
-    /// The SmartConsole class provides "helper" methods to perform common
-    /// behaviors for us. This keeps code elsewhere in the project simpler.
+    /// See the comments through this program AND read the assignment write-up for details.
     /// 
-    /// All of the methods in this class are defined as "static". This isn't 
-    /// a keyword we discussed in GDAPS1 and it won't be on the exam, but 
-    /// it's worth being aware of.
-    /// 
-    /// Static methods are defined in a class, but don't require a specific 
-    /// object (instance of the class) in order to execute them. Instead,
-    /// we call them using the class type. I.e. SmartConsole.<method name>.
-    /// 
-    /// This is how the Math and Console methods you are used to using work.
+    /// This has been provided for use by IGME-106 students as is. It can be used in
+    /// any individual assignment EXCEPT practical exams as long as it is unmodified
+    /// and all comments are left in place!
     /// </summary>
-    class SmartConsole
+    internal class SmartConsole
     {
-        private static ConsoleColor DefaultColor = ConsoleColor.White;
-        private static ConsoleColor InputColor = ConsoleColor.Cyan;
-
-
         /// <summary>
-        /// This enum is defined *inside* the class as private
-        /// because I don't intend for any other class to use it.
-        /// It's a "helper" for the GetYesNoInput.
+        /// Prints an success message in green to the console.
         /// </summary>
-        private enum YesNoParse
+        /// <param name="message">The success message to display.</param>
+        public static void PrintSuccess(string message)
         {
-            Yes,
-            No,
-            Invalid
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         /// <summary>
-        /// Displays the given prompt, waits for input, and
-        /// returns the trimmed input.
+        /// Prints an error message in red to the console.
         /// </summary>
-        /// <param name="prompt">A string prompt to display to the user.</param>
-        /// <returns>Trimmed string</returns>
-        public static string GetPromptedInput(string prompt)
+        /// <param name="message">The error message to display.</param>
+        public static void PrintError(string message)
         {
-            Console.ForegroundColor = DefaultColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        /// <summary>
+        /// Prints a warning message in dark yellow to the console.
+        /// </summary>
+        /// <param name="message">The warning message to display.</param>
+        public static void PrintWarning(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        /// <summary>
+        /// Helper method to prompt the user to enter a number. If their
+        /// response isn't a valid int or isn't in the desired range, reprompt
+        /// </summary>
+        /// <param name="prompt">The string to use in the initial prompt</param>
+        /// <param name="min">The minimum accepted value (inclusive)</param>
+        /// <param name="max">The maximum accepted value (inclusive)</param>
+        /// <returns>The final, valid, user-entered value.</returns>
+        public static double GetValidNumericInput(string prompt, double min, double max)
+        {
+            double result = 0;
+            ConsoleColor color = ConsoleColor.White;
+            while (!double.TryParse(GetPromptedInput(prompt, color), out result) || result < min || result > max)
+            {
+                prompt = $"\tPlease enter a valid number between {min} and {max}:";
+                color = ConsoleColor.DarkYellow;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Helper method to prompt the user to enter a number. If their
+        /// response isn't a valid int or isn't in the desired range, reprompt
+        /// </summary>
+        /// <param name="prompt">The string to use in the initial prompt</param>
+        /// <param name="min">The minimum accepted value (inclusive)</param>
+        /// <param name="max">The maximum accepted value (inclusive)</param>
+        /// <returns>The final, valid, user-entered value.</returns>
+        public static int GetValidNumericInput(string prompt, int min, int max)
+        {
+            int result = 0;
+            ConsoleColor color = ConsoleColor.White;
+            while (!int.TryParse(GetPromptedInput(prompt, color), out result) || result < min || result > max)
+            {
+                prompt = $"\tPlease enter a valid whole number between {min} and {max}:";
+                color = ConsoleColor.DarkYellow;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Given a reference to an array of possible choices, keep prompting
+        /// the user until they enter a valid option
+        /// NOTE: Validation assumes lower case choices!
+        /// </summary>
+        /// <param name="prompt">The prompt to use</param>
+        /// <param name="choices">The valid options</param>
+        /// <returns>The final valid choice</returns>
+        public static char GetPromptedChoice(string prompt, char[] choices)
+        {
+            Console.ForegroundColor = ConsoleColor.White;
             Console.Write(prompt + " ");
-            Console.ForegroundColor = InputColor;
-            string input = Console.ReadLine().Trim();
-            Console.ForegroundColor = DefaultColor;
-            return input;
-        }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            char result = Console.ReadKey().KeyChar; // Get JUST 1 character
+            Console.ForegroundColor = ConsoleColor.White;
 
-        /// <summary>
-        /// Displays the given prompts, waits for input, and
-        /// tries to parse the input as an int. Loops until the
-        /// provided input is a valid int within the range given (inclusive)
-        /// </summary>
-        /// <param name="prompt"></param>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        /// <returns></returns>
-        public static int GetIntRangeInput(string prompt, int min, int max)
-        {
-            int result = int.MinValue;
-            bool success = int.TryParse(GetPromptedInput(prompt), out result);
-            while (!success || result < min || result > max)
+            // We haven't taught using Predicates in parameters. There are ways to implement
+            // this with what you've learned so far, but I didn't feel like making you worry about
+            // anything not related to exceptions or TryParse for this PE.
+            // https://learn.microsoft.com/en-us/dotnet/api/system.array.exists?view=net-7.0
+            while (!Array.Exists(choices, element => element == result))
             {
-                success = int.TryParse(
-                    GetPromptedInput(String.Format("Please enter a whole number in the range {0}-{1}: ", min, max)), 
-                    out result);
+                SmartConsole.PrintWarning("\n\tCommand not recognized.\n");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.Write("\n"+prompt + " ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                result = char.ToLower(Console.ReadKey().KeyChar); // Get JUST 1 character
+                Console.ForegroundColor = ConsoleColor.White;
             }
+            Console.WriteLine();
             return result;
         }
 
         /// <summary>
-        /// Displays the given prompts, waits for input, and
-        /// tries to parse the input as a double. Loops until the
-        /// provided input is a valid double within the range given (inclusive)
+        /// Uses the given string to prompt the user for input and set
+        /// the color to cyan while they type.
         /// </summary>
-        /// <param name="prompt"></param>
-        /// <param name="min"></param>
-        /// <param name="max"></param>
-        /// <returns></returns>
-        public static double GetDoubleRangeInput(string prompt, double min, double max)
+        /// <param name="prompt">What to print before waiting for input</param>
+        /// <param name="promptColor">The color to use when printing the prompt (defaults to white). 
+        /// The user-entered text will always be in cyan.</param>
+        /// <returns>A trimmed version of what the user entered</returns>
+        public static string GetPromptedInput(string prompt, ConsoleColor promptColor = ConsoleColor.White)
         {
-            double result = double.MinValue;
-            bool success = double.TryParse(GetPromptedInput(prompt), out result);
-            while (!success || result < min || result > max)
-            {
-                success = double.TryParse(
-                    GetPromptedInput(String.Format("Please enter a whole number in the range {0}-{1}: ", min, max)),
-                    out result);
-            }
-            return result;
+            // Always print in white
+            Console.ForegroundColor = promptColor;
+
+            // Print the prompt
+            Console.Write(prompt + " ");
+
+            // Switch color and get user input (trim too)
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            string response = Console.ReadLine().Trim();
+
+            // Switch back to white and then return response.
+            Console.ForegroundColor = ConsoleColor.White;
+            return response;
         }
 
-        /// <summary>
-        /// Internal helper method to convert a string input to
-        /// our enum value. Not really neccessary (a compound if with strings
-        /// would be fine), but I wanted to now this switch statement.
-        /// </summary>
-        /// <param name="choice"></param>
-        /// <returns></returns>
-        private static YesNoParse ParseYesNoChoice(string choice)
-        {
-            choice = choice.ToLower();
-            YesNoParse result = YesNoParse.Invalid;
-            switch (choice)
-            {
-                case "yes":
-                case "y":
-                    result = YesNoParse.Yes;
-                    break;
-
-                case "no":
-                case "n":
-                    result = YesNoParse.No;
-                    break;
-
-                default:
-                    Console.WriteLine("Please enter Yes, No, Y or N.");
-                    break;
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Display the given prompt and return a bool based on a
-        /// yes/y/no/n input (and doesn't take anything else)
-        /// </summary>
-        /// <param name="prompt"></param>
-        /// <returns>True if yes</returns>
-        public static bool GetYesNoInput(string prompt)
-        {
-            string choice = GetPromptedInput(prompt);
-            YesNoParse result = ParseYesNoChoice(choice);
-            while (result == YesNoParse.Invalid)
-            {
-                choice = GetPromptedInput(prompt);
-                result = ParseYesNoChoice(choice);
-            }
-            return result == YesNoParse.Yes;
-        }
     }
 }

@@ -1,13 +1,13 @@
 # gdaps2-ind-starter
-This is a template project for students to use in GDAPS 106 to track demo and practice exercise code.
+This is a template project for students to use in GDAPS 106 to track demo and individual assignment code.
 
 # Getting Started
 
 Get your favorite Git client:
-* [Visual Studio](https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Visual-Studio)'s plugin *(This is what we'll be showing you in class!)*
+* [Visual Studio](https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Visual-Studio)'s plugin
+* [GitHub Desktop](https://desktop.github.com/)
 * [GitBash](https://gitforwindows.org/)
 * [SourceTree](https://www.sourcetreeapp.com/)
-* [GitHub Desktop](https://desktop.github.com/)
 
 ### Why are we using Git?
 
@@ -15,7 +15,7 @@ Some of you may be thinking: "Why are these silly people making me use _source c
 
 Well, there are a ton of reasons.
 
-Basically every software company uses some sort of source control throughout the
+Basically, every software company uses some sort of source control throughout the
 development process. It's an incredibly powerful tool that you should learn
 to master in the same way that Arya Stark wields Needle.
 

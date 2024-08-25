@@ -13,7 +13,7 @@
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello GDAPS2!");
+            Console.WriteLine("Hello PS-DSA!");
         }
     }
 }
